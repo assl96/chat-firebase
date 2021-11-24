@@ -1,21 +1,35 @@
 import React, { Component } from 'react';
-
 class ChatRoom extends Component {
     constructor() {
         super();
-        //this.updateMessage = this.updateMessage.bind(this),
+        this.updateMessage = this.updateMessage.bind(this);
+        this.submitMessage = this.submitMessage.bind(this);
+        
         this.state = {
             message: '',
-            messages: [
-                {id: 1, text:'hola'},
-                {id: 2, text:'que tal'},
-                {id: 3, text:'como estas?'}
-            ]
+            messages: []
         }
     }
 
-    updateMessage(e){
-        console.log(e.target.value)
+    updateMessage(e) {
+        this.setState({
+          message: e.target.value
+        });
+      }
+
+    submitMessage(){
+        const message = {
+            id: this.state.messages.length,
+            text: this.state.message
+        };
+        
+        let listMessages = this.state.messages;
+        listMessages.push(message);
+        this.setState({
+            message: listMessages
+        });
+
+        this.setState({ message: ''})
     }
 
     render(){
@@ -35,12 +49,15 @@ class ChatRoom extends Component {
 
                 <div className="card-footer">
                     <input 
+                    value= {this.state.message}
                     onChange={this.updateMessage}
                     type="text" 
                     placeholder="Write a message"
                     className="form-control" 
                     />
-                    <button className="btn btn-dark btn-block">
+                    <button 
+                    onClick={() => this.submitMessage()}
+                    className="btn btn-dark btn-block">
                         Send Message
                     </button>
                 </div>
